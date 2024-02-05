@@ -18,7 +18,7 @@ struct OperationView: View {
     var body: some View {
         VStack {
                 Picker("Type", selection: $selected) {
-                    Text("Versement").tag(Operation.Oper.versement)
+                    Text("Retrait").tag(Operation.Oper.retrait)
                     Text("Dépôt").tag(Operation.Oper.depot)
                 }
                 .pickerStyle(.palette)
