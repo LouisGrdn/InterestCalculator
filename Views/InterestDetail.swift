@@ -9,7 +9,11 @@ import SwiftUI
 
 struct InterestDetail: View {
     @Environment(\.editMode) private var editMode
-    @State var interest: Interest
+    @Environment(StockedInterest.self) var stockedInterests
+    var index: Int
+    @State private var montantsOpe: [String] = []
+    @State private var datesOpe: [Date] = []
+    @State private var typeOpe: [Operation.Oper] = []
     
     let dateFormat =  Date.FormatStyle()
         .year()
@@ -18,10 +22,8 @@ struct InterestDetail: View {
         .locale(Locale(identifier: "fr_FR"))
     
     var body: some View {
+        @State var interest: Interest = stockedInterests.interests[index]
         VStack {
-            HStack {
-                EditButton()
-            }
             if(editMode?.wrappedValue == .inactive){
                 Text("Détails")
                     .font(.title)
@@ -47,14 +49,45 @@ struct InterestDetail: View {
                         Divider()
                     }
                 }
+                Text("Intérêts Générés : \(interest.calculInterest())")
             }
             else {
-                InterestEditor(interest: $interest)
+                InterestEditor(
+                    interest: $interest,
+                    montantsOpe: $montantsOpe,
+                    datesOpe: $datesOpe,
+                    typeOpe: $typeOpe)
+                
+                .onAppear() {
+                    typeOpe = []
+                    datesOpe = []
+                    montantsOpe = []
+                }
+                .onDisappear() {
+                    for i in montantsOpe.indices {
+                        interest.operations.append(
+                            Operation(type: typeOpe[i],
+                                      montant: montantsOpe[i],
+                                      date: datesOpe[i],
+                                      id: interest.operations.count))
+                    }
+                    stockedInterests.interests[index] = interest
+                    typeOpe = []
+                    datesOpe = []
+                    montantsOpe = []
+                }
+            }
+        }
+        .toolbar {
+            HStack {
+                Spacer()
+                EditButton()
+                    .padding(.top, 10)
             }
         }
     }
 }
 
-#Preview {
-    InterestDetail(interest: StockedInterest().interests[0])
-}
+//#Preview {
+//    InterestDetail(interest: StockedInterest().interests[0])
+//}
