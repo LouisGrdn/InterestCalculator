@@ -15,6 +15,6 @@ class StockedInterest: ObservableObject{
             name: "Livret A",
             taux: "10.0",
             montant: "10000",
-            operations: [Operation(type: Operation.Oper.versement, montant: "150", date: Date(), id: 0)],
+            operations: [Operation(type: Operation.Oper.retrait, montant: "150", date: Date(), id: 0)],
             id: 0)]
 }

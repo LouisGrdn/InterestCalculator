@@ -57,7 +57,7 @@ struct FormView: View {
                     count += 1
                     montantsOpe.append("")
                     datesOpe.append(Date())
-                    typeOpe.append(.versement)
+                    typeOpe.append(.retrait)
                 }
                 .buttonStyle(.bordered)
                 .padding(.bottom, 10)

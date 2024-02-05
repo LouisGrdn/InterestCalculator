@@ -10,7 +10,7 @@ import Foundation
 class Operation: Identifiable {
     
     enum Oper: String, CaseIterable, Identifiable {
-        case versement, depot
+        case retrait, depot
         var id: Self {self}
     }
     
@@ -25,4 +25,31 @@ class Operation: Identifiable {
     var montant: String
     var date: Date
     var id: Int
+    
+    let formatter = DateFormatter()
+    
+    func findEffectiveDate() -> Date {
+        let day = self.date.formatted(Date.FormatStyle().day())
+        var month = self.date.formatted(Date.FormatStyle().month(.twoDigits))
+        let year = self.date.formatted(Date.FormatStyle().year())
+        formatter.dateFormat = "dd/MM/yyyy"
+        if(self.type == .retrait) {
+            if(Int(day)! > 15) {
+                return formatter.date(from: "15/\(month)/\(year)")!
+            }
+            else if(Int(day)! > 1 && Int(day)! < 15) {
+                return formatter.date(from: "01/\(month)/\(year)")!
+            }
+        }
+        else {
+            if(Int(day)! > 15) {
+                month = "\(Int(month)!+1)"
+                return formatter.date(from: "01/\(month)/\(year)")!
+            }
+            else if(Int(day)! > 1 && Int(day)! < 15) {
+                return formatter.date(from: "15/\(month)/\(year)")!
+            }
+        }
+        return self.date
+    }
 }
