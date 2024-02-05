@@ -19,11 +19,12 @@ struct InterestList: View {
                 if(stockedInterest.interests.count > 0) {
                 }
                 ForEach(stockedInterest.interests) { interest in
+                    let index = stockedInterest.interests.firstIndex(where: { $0.id == interest.id })
                     NavigationLink {
-                        InterestDetail(interest: interest)
+                        InterestDetail(index: index!)
                     } label: {
                         HStack {
-                            Text(interest.name)
+                            Text(stockedInterest.interests[index!].name)
                             Spacer()
                             Text(">")
                         }
