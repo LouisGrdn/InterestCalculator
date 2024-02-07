@@ -25,8 +25,13 @@ struct ContentView: View {
                 .tabItem {
                     Label("Liste", systemImage: "list.bullet.circle")
                 }
+                
                 .tag(Tab.list)
         }
+        .onAppear() {
+            UITabBar.appearance().backgroundColor = .white
+        }
+        .tint(.blue)
     }
 }
 

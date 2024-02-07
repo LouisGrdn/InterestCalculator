@@ -28,12 +28,14 @@ struct FormView: View {
     var body: some View {
         ScrollView {
             VStack {
-                Text("Calculateur d'intérêt")
+                Text("Calculateur")
                     .font(.title)
                     .bold()
                     .padding(.bottom, 20)
+                    .foregroundStyle(.white)
                 Text("Intitulé Livret")
                     .font(.title2)
+                    .foregroundStyle(.white)
                 TextField("Livret", text:$name)
                     .multilineTextAlignment(.center)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -41,6 +43,7 @@ struct FormView: View {
                     .keyboardType(.decimalPad)
                 Text("Montant")
                     .font(.title2)
+                    .foregroundStyle(.white)
                 TextField("Montant", text:$montant)
                     .multilineTextAlignment(.center)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -48,6 +51,7 @@ struct FormView: View {
                     .keyboardType(.decimalPad)
                 Text("Taux")
                     .font(.title2)
+                    .foregroundStyle(.white)
                 TextField("Taux", text: $taux)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .multilineTextAlignment(.center)
@@ -59,7 +63,9 @@ struct FormView: View {
                     datesOpe.append(Date())
                     typeOpe.append(.retrait)
                 }
-                .buttonStyle(.bordered)
+                .foregroundStyle(.white)
+//                .background(.red)
+                .buttonStyle(.borderedProminent)
                 .padding(.bottom, 10)
                 ForEach(montantsOpe.indices, id: \.self) { index in
                     OperationView(
@@ -67,44 +73,50 @@ struct FormView: View {
                         montant: $montantsOpe[index],
                         date: $datesOpe[index])
                 }
-                Button("Valider") {
-                    if(montant != "" && taux != ""){
-                        validation = true
-                        for i in 0..<montantsOpe.count {
-                            if(montantsOpe[i] != ""){
-                                operations.append(
-                                    Operation(
-                                        type: typeOpe[i],
-                                        montant: montantsOpe[i],
-                                        date: datesOpe[i],
-                                        id: i))
+                ZStack {
+                    Button("Valider") {
+                        if(montant != "" && taux != ""){
+                            validation = true
+                            for i in 0..<montantsOpe.count {
+                                if(montantsOpe[i] != ""){
+                                    operations.append(
+                                        Operation(
+                                            type: typeOpe[i],
+                                            montant: montantsOpe[i],
+                                            date: datesOpe[i],
+                                            id: i))
+                                }
                             }
+                            stockedInterest.interests.append(
+                                Interest(
+                                    name: name,
+                                    taux: taux,
+                                    montant: montant,
+                                    operations: operations,
+                                    id: stockedInterest.interests.count)
+                            )
+                            montant = ""
+                            taux = ""
+                            name = ""
+                            datesOpe = []
+                            montantsOpe = []
+                            typeOpe = []
                         }
-                        stockedInterest.interests.append(
-                            Interest(
-                                name: name,
-                                taux: taux,
-                                montant: montant,
-                                operations: operations,
-                                id: stockedInterest.interests.count)
-                        )
-                        montant = ""
-                        taux = ""
-                        datesOpe = []
-                        montantsOpe = []
-                        typeOpe = []
                     }
+                    .buttonStyle(.bordered)
+                    .buttonBorderShape(.roundedRectangle(radius:0))
+                    .background(.red)
+                    .foregroundStyle(.white)
                 }
-                .buttonStyle(.borderedProminent)
-                .buttonBorderShape(.roundedRectangle(radius: 20))
+                .background(Color(red: 0x4A / 255, green: 0x4E / 255, blue: 0x69 / 255))
                 if(validation) {
                     Text("Opération enregistrée avec succés !")
                 }
                 
-                
             }
             .padding()
         }
+        .background(Color(red: 0x4A / 255, green: 0x4E / 255, blue: 0x69 / 255))
     }
 }
 

@@ -18,16 +18,20 @@ struct OperationView: View {
     var body: some View {
         VStack {
                 Picker("Type", selection: $selected) {
-                    Text("Retrait").tag(Operation.Oper.retrait)
+                    Text("Retrait").foregroundStyle(.red).tag(Operation.Oper.retrait)
                     Text("Dépôt").tag(Operation.Oper.depot)
                 }
-                .pickerStyle(.palette)
+                .colorInvert()
+                    .colorMultiply(Color.white)
+                .pickerStyle(.segmented)
                 TextField("Montant", text: $montant)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .keyboardType(.decimalPad)
             DatePicker("Date de l'opération",
                        selection: $date,
                        displayedComponents: [.date])
+            .colorInvert()
+                .colorMultiply(Color.white)
         }
         .padding(.horizontal, 30)
     }

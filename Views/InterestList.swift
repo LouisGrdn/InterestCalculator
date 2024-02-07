@@ -10,37 +10,41 @@ import SwiftUI
 struct InterestList: View {
     @Environment (StockedInterest.self) var stockedInterest
     var body: some View {
-        VStack {
             NavigationSplitView {
-                Text("Liste des livrets")
-                    .font(.title)
-                    .bold()
-                    .padding(.vertical, 25)
-                if(stockedInterest.interests.count > 0) {
-                }
-                ForEach(stockedInterest.interests) { interest in
-                    let index = stockedInterest.interests.firstIndex(where: { $0.id == interest.id })
-                    NavigationLink {
-                        InterestDetail(index: index!)
-                    } label: {
-                        HStack {
-                            Text(stockedInterest.interests[index!].name)
-                            Spacer()
-                            Text(">")
-                        }
-                        .padding(.horizontal, 20)
-                        .font(.title3)
-                        .foregroundStyle(Color.black)
+                VStack {
+                    Text("Mes livrets")
+                        .font(.title)
+                        .bold()
+                        .padding(.vertical, 25)
+                        .foregroundStyle(Color.white)
+                    if(stockedInterest.interests.count > 0) {
                     }
+                    ForEach(stockedInterest.interests) { interest in
+                        let index = stockedInterest.interests.firstIndex(where: { $0.id == interest.id })
+                        NavigationLink {
+                            InterestDetail(index: index!)
+                        } label: {
+                            HStack {
+                                Text(stockedInterest.interests[index!].name)
+                                Spacer()
+                                Text(">")
+                            }
+                            .padding(.bottom, 20)
+                            .padding(.horizontal, 20)
+                            .font(.title2)
+                            .foregroundStyle(Color.white)
+                        }
+                    }
+                    Spacer()
                 }
-                Spacer()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color(red: 0x4A / 255, green: 0x4E / 255, blue: 0x69 / 255).edgesIgnoringSafeArea(.all))
             } detail: {
                 Text("Liste des livrets")
                     .font(.title)
                     .bold()
                     .padding(.top, 25)
             }
-        }
     }
 }
 
