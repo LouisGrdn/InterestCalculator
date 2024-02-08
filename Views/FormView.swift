@@ -15,6 +15,7 @@ struct FormView: View {
     @State private var montant: String = ""
     @State private var taux: String = ""
     @State private var name: String = ""
+    @State private var date: Date = Date()
     // Opérations
     @State private var montantsOpe: [String] = []
     @State private var datesOpe: [Date] = []
@@ -57,6 +58,12 @@ struct FormView: View {
                     .multilineTextAlignment(.center)
                     .padding(.bottom)
                     .keyboardType(.decimalPad)
+                DatePicker("Date de création",
+                           selection: $date,
+                           displayedComponents: [.date])
+                .padding(.bottom, 20)
+                .colorInvert()
+                    .colorMultiply(Color.white)
                 Button("Ajouter un versement / dépôt") {
                     count += 1
                     montantsOpe.append("")
@@ -71,7 +78,9 @@ struct FormView: View {
                     OperationView(
                         selected: $typeOpe[index],
                         montant: $montantsOpe[index],
-                        date: $datesOpe[index])
+                        date: $datesOpe[index],
+                        startDate: $date,
+                        isAdding: false)
                 }
                 ZStack {
                     Button("Valider") {
@@ -93,11 +102,13 @@ struct FormView: View {
                                     taux: taux,
                                     montant: montant,
                                     operations: operations,
-                                    id: stockedInterest.interests.count)
+                                    id: stockedInterest.interests.count,
+                                    date: date)
                             )
                             montant = ""
                             taux = ""
                             name = ""
+                            date = Date()
                             datesOpe = []
                             montantsOpe = []
                             typeOpe = []

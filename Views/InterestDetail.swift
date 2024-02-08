@@ -22,12 +22,6 @@ struct InterestDetail: View {
     
     @State private var adding: Bool = false
     
-    let dateFormat =  Date.FormatStyle()
-        .year()
-        .month(.wide)
-        .day()
-        .locale(Locale(identifier: "fr_FR"))
-    
     
     var body: some View {
         @State var interest: Interest = stockedInterests.interests[index]
@@ -95,7 +89,7 @@ struct InterestDetail: View {
                     }
                 }
                 else {
-                    OperationView(selected: $type, montant: $montantOpe, date: $dateOpe)
+                    OperationView(selected: $type, montant: $montantOpe, date: $dateOpe, startDate: $interest.date, isAdding: true)
                         .onDisappear() {
                             interest.operations.append(Operation(type: type, montant: montantOpe, date: dateOpe, id: interest.operations.count))
                             stockedInterests.interests[index] = interest
