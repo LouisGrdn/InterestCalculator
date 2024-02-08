@@ -11,6 +11,12 @@ import Foundation
 @Observable
 class StockedInterest: ObservableObject{
     var interests: [Interest] = []
+    
+    static func getDateFormatter() -> DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd/MM/yyyy"
+        return formatter
+    }
 //        Interest(
 //            name: "Livret A",
 //            taux: "10.0",
