@@ -16,17 +16,18 @@ struct InterestDetail: View {
     @State private var datesOpe: [Date] = []
     @State private var typeOpe: [Operation.Oper] = []
     
+    @State private var montantOpe: String = ""
+    @State private var dateOpe: Date = Date()
+    @State private var type: Operation.Oper = Operation.Oper.retrait
+    
+    @State private var adding: Bool = false
+    
     let dateFormat =  Date.FormatStyle()
         .year()
         .month(.wide)
         .day()
         .locale(Locale(identifier: "fr_FR"))
     
-    @State private var montantOpe: String = ""
-    @State private var dateOpe: Date = Date()
-    @State private var type: Operation.Oper = Operation.Oper.retrait
-    
-    @State private var adding: Bool = false
     
     var body: some View {
         @State var interest: Interest = stockedInterests.interests[index]
@@ -63,49 +64,8 @@ struct InterestDetail: View {
                         .padding(.bottom, 10)
                         .foregroundStyle(.white)
                     Divider()
-                    if(interest.operations.count != 0) {
-                        VStack(alignment: .leading) {
-                            HStack {
-                                Text("Opérations")
-                                    .font(.title2)
-                                    .bold()
-                                    .padding(.bottom, 5)
-                                    .foregroundStyle(.white)
-                                Spacer()
-                                ZStack{
-                                    if(editMode?.wrappedValue == .inactive) {
-                                        Button("Ajouter", systemImage: "plus", role: .cancel) {
-                                            adding = true
-                                            editMode?.wrappedValue = .active
-                                        }
-                                        .foregroundStyle(.white)
-                                        .buttonStyle(.borderedProminent)
-                                    }   else {
-                                        Button("Confirmer", systemImage: "plus", role: .cancel) {
-                                            adding = false
-                                            editMode?.wrappedValue = .inactive
-                                        }
-                                        .foregroundStyle(.white)
-                                        .buttonStyle(.borderedProminent)
-                                    }
-                                }
-                            }
-                            ForEach(interest.operations) { operation in
-                                VStack(alignment: .leading) {
-                                    Text("Opération N°\(operation.id+1)")
-                                        .font(.title3)
-                                        .underline()
-                                    Text("Type : \(operation.type.rawValue.capitalized)")
-                                    Text("Montant : \(operation.montant)€")
-                                    Text("Date : \(operation.date.formatted(dateFormat))")
-                                    Divider()
-                                }
-//                                .padding(.horizontal, 20)
-                                .foregroundStyle(.white)
-                            }
-                        }
-                        .padding(.horizontal, 20)
-                    }
+                    OperationDetail(adding: $adding, interest: $interest)
+                    
                 }
                 else if(editMode?.wrappedValue == .active && !adding) {
                     InterestEditor(

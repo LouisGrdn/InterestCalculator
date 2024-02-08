@@ -111,6 +111,8 @@ struct FormView: View {
                 .background(Color(red: 0x4A / 255, green: 0x4E / 255, blue: 0x69 / 255))
                 if(validation) {
                     Text("Opération enregistrée avec succés !")
+                        .foregroundStyle(.white)
+                        .bold()
                 }
                 
             }
