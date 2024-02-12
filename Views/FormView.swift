@@ -28,50 +28,50 @@ struct FormView: View {
     
     var body: some View {
         ScrollView {
-            VStack {
-                Text("Calculateur")
-                    .font(.title)
-                    .bold()
-                    .padding(.bottom, 20)
-                    .foregroundStyle(.white)
-                Text("Intitulé Livret")
-                    .font(.title2)
-                    .foregroundStyle(.white)
-                TextField("Livret", text:$name)
-                    .multilineTextAlignment(.center)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding(.bottom)
-                    .keyboardType(.decimalPad)
-                Text("Montant")
-                    .font(.title2)
-                    .foregroundStyle(.white)
-                TextField("Montant", text:$montant)
-                    .multilineTextAlignment(.center)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding(.bottom)
-                    .keyboardType(.decimalPad)
-                Text("Taux")
-                    .font(.title2)
-                    .foregroundStyle(.white)
-                TextField("Taux", text: $taux)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .multilineTextAlignment(.center)
-                    .padding(.bottom)
-                    .keyboardType(.decimalPad)
+                VStack {
+                    Text("Calculateur")
+                        .font(.title)
+                        .bold()
+                        .padding(.bottom, 20)
+                        .foregroundStyle(.white)
+                    Text("Intitulé Livret")
+                        .font(.title2)
+                        .foregroundStyle(.white)
+                    TextField("Livret", text:$name)
+                        .multilineTextAlignment(.center)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .padding(.bottom)
+                        .submitLabel(.done)
+                    Text("Montant")
+                        .font(.title2)
+                        .foregroundStyle(.white)
+                    TextField("Montant", text:$montant)
+                        .multilineTextAlignment(.center)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .padding(.bottom)
+                        .keyboardType(.decimalPad)
+                    Text("Taux")
+                        .font(.title2)
+                        .foregroundStyle(.white)
+                    TextField("Taux", text: $taux)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .multilineTextAlignment(.center)
+                        .padding(.bottom)
+                        .keyboardType(.decimalPad)
                 DatePicker("Date de création",
                            selection: $date,
                            displayedComponents: [.date])
                 .padding(.bottom, 20)
                 .colorInvert()
-                    .colorMultiply(Color.white)
+                .colorMultiply(Color.white)
                 Button("Ajouter un versement / dépôt") {
                     count += 1
                     montantsOpe.append("")
                     datesOpe.append(Date())
                     typeOpe.append(.retrait)
                 }
+                
                 .foregroundStyle(.white)
-//                .background(.red)
                 .buttonStyle(.borderedProminent)
                 .padding(.bottom, 10)
                 ForEach(montantsOpe.indices, id: \.self) { index in
@@ -121,14 +121,16 @@ struct FormView: View {
                 }
                 .background(Color(red: 0x4A / 255, green: 0x4E / 255, blue: 0x69 / 255))
                 if(validation) {
-                    Text("Opération enregistrée avec succés !")
+                    Text("Opération enregistrée avec succès !")
                         .foregroundStyle(.white)
                         .bold()
                 }
                 
             }
+            
             .padding()
         }
+        .scrollDismissesKeyboard(.immediately)
         .background(Color(red: 0x4A / 255, green: 0x4E / 255, blue: 0x69 / 255))
     }
 }

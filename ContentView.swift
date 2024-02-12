@@ -29,7 +29,7 @@ struct ContentView: View {
                 .tag(Tab.list)
         }
         .onAppear() {
-            UITabBar.appearance().backgroundColor = .white
+            UITabBar.appearance().backgroundColor = .darkGray
         }
         .tint(.blue)
     }
