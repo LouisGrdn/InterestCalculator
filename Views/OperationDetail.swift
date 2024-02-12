@@ -11,8 +11,12 @@ struct OperationDetail: View {
     @Environment (\.editMode) private var editMode
     @Environment (StockedInterest.self) var stockedInterests
     
-    @Binding var adding: Bool
     @Binding var interest: Interest
+    
+    @Binding var id: Int
+    
+    @Binding var adding: Bool
+    @Binding var updating: Bool
     
     let dateFormat =  Date.FormatStyle()
         .year()
@@ -39,6 +43,7 @@ struct OperationDetail: View {
                 }   else {
                     Button("Confirmer", systemImage: "plus", role: .cancel) {
                         adding = false
+                        updating = false
                         editMode?.wrappedValue = .inactive
                     }
                     .foregroundStyle(.white)
@@ -50,15 +55,26 @@ struct OperationDetail: View {
         if(interest.operations.count != 0) {
             ForEach(interest.operations) { operation in
                 VStack(alignment: .leading) {
-                    HStack {
+                    HStack(spacing: 10) {
                         Text("Opération N°\(operation.id+1)")
                             .font(.title3)
                             .underline()
+                            .padding(.trailing, 10)
+                        Button("", systemImage: "pencil.line") {
+                            updating = true
+                            editMode?.wrappedValue = .active
+                            id = operation.id
+                        }
+                        .foregroundStyle(.blue)
                         Button("", systemImage: "minus.square") {
                             interest.operations.remove(at: operation.id)
                             stockedInterests.interests[interest.id] = interest
+                            for operation in interest.operations {
+                                operation.id -= 1
+                            }
                         }
                         .foregroundStyle(Color(red: 0xE8/255, green: 0x5A/255, blue: 0x7C/255))
+                        
                     }
                     Text("Type : \(operation.type.rawValue.capitalized)")
                     Text("Montant : \(operation.montant)€")
@@ -73,7 +89,7 @@ struct OperationDetail: View {
     }
 }
 
-#Preview {
-    OperationDetail(adding: .constant(false), interest: .constant(Interest(name: "A", taux: "10", montant: "10000", id: 0)))
-        .environment(StockedInterest())
-}
+//#Preview {
+//    OperationDetail(adding: .constant(false), interest: .constant(Interest(name: "A", taux: "10", montant: "10000", id: 0)))
+//        .environment(StockedInterest())
+//}

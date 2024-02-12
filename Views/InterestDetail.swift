@@ -21,6 +21,14 @@ struct InterestDetail: View {
     @State private var type: Operation.Oper = Operation.Oper.retrait
     
     @State private var adding: Bool = false
+    @State private var updating: Bool = false
+    @State private var operationIdToUpdate: Int = -1
+    
+    let dateFormat =  Date.FormatStyle()
+        .year()
+        .month(.wide)
+        .day()
+        .locale(Locale(identifier: "fr_FR"))
     
     
     var body: some View {
@@ -41,8 +49,10 @@ struct InterestDetail: View {
                                 Text("\(interest.calculInterest())€")
                                     .font(.title)
                                     .bold()
-                                Text("Intérêts générés :")
+                                    .foregroundStyle(.black)
+                                Text("Intérêts générés")
                                     .font(.caption)
+                                    .foregroundStyle(.black)
                             }
 //                            .padding(.top, 20)
                         }
@@ -57,16 +67,25 @@ struct InterestDetail: View {
                         .bold()
                         .padding(.bottom, 10)
                         .foregroundStyle(.white)
+                    Text("Date de création : \(interest.date.formatted(dateFormat))")
+                        .font(.title3)
+                        .bold()
+                        .padding(.bottom, 20)
+                        .foregroundStyle(.white)
                     Divider()
-                    OperationDetail(adding: $adding, interest: $interest)
+                    OperationDetail(interest: $interest, id: $operationIdToUpdate, adding: $adding, updating: $updating)
                     
+                }
+                else if(editMode?.wrappedValue == .active && updating) {
+                    OperationView(
+                        selected: $interest.operations[operationIdToUpdate].type,
+                        montant: $interest.operations[operationIdToUpdate].montant,
+                        date: $interest.operations[operationIdToUpdate].date,
+                        startDate: $interest.date)
                 }
                 else if(editMode?.wrappedValue == .active && !adding) {
                     InterestEditor(
                         interest: $interest,
-                        montantsOpe: $montantsOpe,
-                        datesOpe: $datesOpe,
-                        typeOpe: $typeOpe,
                         isEditing: $isEditing)
                     
                     .onAppear() {
@@ -109,7 +128,6 @@ struct InterestDetail: View {
                     }
                     else {
                         Spacer()
-                        //                    EditButton()
                         Button("Modifier", role: .cancel) {
                             editMode?.animation().wrappedValue = .active
                         }

@@ -9,10 +9,6 @@ import SwiftUI
 
 struct InterestEditor: View {
     @Binding var interest: Interest
-    
-    @Binding var montantsOpe: [String]
-    @Binding var datesOpe: [Date]
-    @Binding var typeOpe: [Operation.Oper]
     @Binding var isEditing: Bool
 
     
@@ -44,37 +40,14 @@ struct InterestEditor: View {
                     .multilineTextAlignment(.center)
                     .padding(.bottom)
                     .keyboardType(.decimalPad)
-                Spacer()
+                DatePicker("Date de création",
+                           selection: $interest.date,
+                           displayedComponents: [.date])
+                .padding(.bottom, 20)
+                .colorInvert()
+                    .colorMultiply(Color.white)
             }
             .padding(.horizontal , 20)
-//            VStack {
-//                ForEach(interest.operations.indices, id:\.self) { index in
-//                    Text("Opération N°\(index+1)")
-//                        .font(.title3)
-//                        .underline()
-//                        .foregroundStyle(.white)
-//                    OperationView(
-//                        selected: $interest.operations[index].type,
-//                        montant: $interest.operations[index].montant,
-//                        date: $interest.operations[index].date)
-//                }
-//            }
-//            .padding(.horizontal, 20)
-//            Button("Ajouter un versement / dépôt") {
-//                montantsOpe.append("")
-//                datesOpe.append(Date())
-//                typeOpe.append(.retrait)
-//            }
-//            .buttonStyle(.borderedProminent)
-//            .foregroundStyle(.white)
-//            ForEach(montantsOpe.indices, id: \.self) { index in
-//                OperationView(
-//                    selected: $typeOpe[index],
-//                    montant: $montantsOpe[index],
-//                    date: $datesOpe[index])
-//                
-//            }
-//            .padding(.bottom, 10)
             
         }
     }
