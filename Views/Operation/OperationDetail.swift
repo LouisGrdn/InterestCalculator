@@ -69,8 +69,10 @@ struct OperationDetail: View {
                         Button("", systemImage: "minus.square") {
                             interest.operations.remove(at: operation.id)
                             stockedInterests.interests[interest.id] = interest
-                            for operation in interest.operations {
-                                operation.id -= 1
+                            if(operation.id != interest.operations.count) {
+                                for operation in interest.operations {
+                                    operation.id -= 1
+                                }
                             }
                         }
                         .foregroundStyle(Color(red: 0xE8/255, green: 0x5A/255, blue: 0x7C/255))

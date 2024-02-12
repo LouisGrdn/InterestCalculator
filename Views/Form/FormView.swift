@@ -29,41 +29,11 @@ struct FormView: View {
     var body: some View {
         ScrollView {
                 VStack {
-                    Text("Calculateur")
-                        .font(.title)
-                        .bold()
-                        .padding(.bottom, 20)
-                        .foregroundStyle(.white)
-                    Text("Intitulé Livret")
-                        .font(.title2)
-                        .foregroundStyle(.white)
-                    TextField("Livret", text:$name)
-                        .multilineTextAlignment(.center)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding(.bottom)
-                        .submitLabel(.done)
-                    Text("Montant")
-                        .font(.title2)
-                        .foregroundStyle(.white)
-                    TextField("Montant", text:$montant)
-                        .multilineTextAlignment(.center)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding(.bottom)
-                        .keyboardType(.decimalPad)
-                    Text("Taux")
-                        .font(.title2)
-                        .foregroundStyle(.white)
-                    TextField("Taux", text: $taux)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .multilineTextAlignment(.center)
-                        .padding(.bottom)
-                        .keyboardType(.decimalPad)
-                DatePicker("Date de création",
-                           selection: $date,
-                           displayedComponents: [.date])
-                .padding(.bottom, 20)
-                .colorInvert()
-                .colorMultiply(Color.white)
+                    InitialForm(
+                        montant: $montant,
+                        taux: $taux,
+                        name: $name,
+                        date: $date)
                 Button("Ajouter un versement / dépôt") {
                     count += 1
                     montantsOpe.append("")
@@ -80,7 +50,8 @@ struct FormView: View {
                         montant: $montantsOpe[index],
                         date: $datesOpe[index],
                         startDate: $date,
-                        isAdding: false)
+                        isAdding: false,
+                        isDeletable: true)
                 }
                 ZStack {
                     Button("Valider") {
@@ -116,7 +87,7 @@ struct FormView: View {
                     }
                     .buttonStyle(.bordered)
                     .buttonBorderShape(.roundedRectangle(radius:0))
-                    .background(.red)
+                    .background(montant == "" && name == "" && taux == "" ? .gray : .red)
                     .foregroundStyle(.white)
                 }
                 .background(Color(red: 0x4A / 255, green: 0x4E / 255, blue: 0x69 / 255))

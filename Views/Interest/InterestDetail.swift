@@ -54,7 +54,6 @@ struct InterestDetail: View {
                                     .font(.caption)
                                     .foregroundStyle(.black)
                             }
-//                            .padding(.top, 20)
                         }
                         .padding(.bottom, 50)
                     Text("Montant : \(interest.montant)€")
@@ -95,11 +94,13 @@ struct InterestDetail: View {
                     }
                     .onDisappear() {
                         for i in montantsOpe.indices {
-                            interest.operations.append(
-                                Operation(type: typeOpe[i],
-                                          montant: montantsOpe[i],
-                                          date: datesOpe[i],
-                                          id: interest.operations.count))
+                            if(montantsOpe[i] != "") {
+                                interest.operations.append(
+                                    Operation(type: typeOpe[i],
+                                              montant: montantsOpe[i],
+                                              date: datesOpe[i],
+                                              id: interest.operations.count))
+                            }
                         }
                         stockedInterests.interests[index] = interest
                         typeOpe = []
