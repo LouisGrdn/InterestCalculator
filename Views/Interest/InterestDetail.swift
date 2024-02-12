@@ -111,8 +111,10 @@ struct InterestDetail: View {
                 else {
                     OperationView(selected: $type, montant: $montantOpe, date: $dateOpe, startDate: $interest.date, isAdding: true)
                         .onDisappear() {
-                            interest.operations.append(Operation(type: type, montant: montantOpe, date: dateOpe, id: interest.operations.count))
-                            stockedInterests.interests[index] = interest
+                            if(montantOpe != "") {
+                                interest.operations.append(Operation(type: type, montant: montantOpe, date: dateOpe, id: interest.operations.count))
+                                stockedInterests.interests[index] = interest
+                            }
                             adding = false
                             montantOpe = ""
                             dateOpe = Date()
