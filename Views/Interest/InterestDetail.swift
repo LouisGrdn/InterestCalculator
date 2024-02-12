@@ -24,17 +24,22 @@ struct InterestDetail: View {
     @State private var updating: Bool = false
     @State private var operationIdToUpdate: Int = -1
     
+    
     let dateFormat =  Date.FormatStyle()
         .year()
         .month(.wide)
         .day()
         .locale(Locale(identifier: "fr_FR"))
     
+    let years = Array(2024...2030) // Vous pouvez ajuster cette plage selon vos besoins
+    @State private var selectedYear = Calendar.current.component(.year, from: Date())
+    
     
     var body: some View {
         @State var interest: Interest = stockedInterests.interests[index]
         ScrollView {
             VStack {
+                // Default view
                 if(editMode?.wrappedValue == .inactive){
                     Text("\(interest.name)")
                         .font(.title)
@@ -55,7 +60,13 @@ struct InterestDetail: View {
                                     .foregroundStyle(.black)
                             }
                         }
-                        .padding(.bottom, 50)
+                    Picker("Année", selection: $selectedYear) {
+                        ForEach(years, id: \.self) {
+                            Text("\($0)")
+                        }
+                    }
+                    .pickerStyle(.menu)
+                    .padding(.bottom, 50)
                     Text("Montant : \(interest.montant)€")
                         .font(.title2)
                         .bold()
@@ -73,8 +84,8 @@ struct InterestDetail: View {
                         .foregroundStyle(.white)
                     Divider()
                     OperationDetail(interest: $interest, id: $operationIdToUpdate, adding: $adding, updating: $updating)
-                    
                 }
+                // Update Operation view
                 else if(editMode?.wrappedValue == .active && updating) {
                     OperationView(
                         selected: $interest.operations[operationIdToUpdate].type,
@@ -82,6 +93,7 @@ struct InterestDetail: View {
                         date: $interest.operations[operationIdToUpdate].date,
                         startDate: $interest.date)
                 }
+                // Update Info view
                 else if(editMode?.wrappedValue == .active && !adding) {
                     InterestEditor(
                         interest: $interest,
@@ -108,13 +120,14 @@ struct InterestDetail: View {
                         montantsOpe = []
                     }
                 }
+                // Operation adding
                 else {
                     OperationView(selected: $type, montant: $montantOpe, date: $dateOpe, startDate: $interest.date, isAdding: true)
                         .onDisappear() {
-                            if(montantOpe != "") {
+//                            if(montantOpe != "") {
                                 interest.operations.append(Operation(type: type, montant: montantOpe, date: dateOpe, id: interest.operations.count))
-                                stockedInterests.interests[index] = interest
-                            }
+//                            }
+                            stockedInterests.interests[index] = interest
                             adding = false
                             montantOpe = ""
                             dateOpe = Date()

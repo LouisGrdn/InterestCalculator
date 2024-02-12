@@ -40,6 +40,7 @@ struct OperationView: View {
                             montant = ""
                             hidden = true
                         }
+                        .foregroundStyle(.red)
                     }
                 }
                 TextField("Montant", text: $montant)
