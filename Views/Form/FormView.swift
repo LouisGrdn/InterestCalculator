@@ -87,7 +87,7 @@ struct FormView: View {
                     }
                     .buttonStyle(.bordered)
                     .buttonBorderShape(.roundedRectangle(radius:0))
-                    .background(montant == "" && name == "" && taux == "" ? .gray : .red)
+                    .background(montant != "" && name != "" && taux != "" ? .red : .gray)
                     .foregroundStyle(.white)
                 }
                 .background(Color(red: 0x4A / 255, green: 0x4E / 255, blue: 0x69 / 255))
