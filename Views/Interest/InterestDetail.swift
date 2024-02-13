@@ -24,6 +24,9 @@ struct InterestDetail: View {
     @State private var updating: Bool = false
     @State private var operationIdToUpdate: Int = -1
     
+    @State private var selectedInterestYear: Int = Calendar.current.component(.year, from: Date())
+    @State private var selectedOperationYear: Int = Calendar.current.component(.year, from: Date())
+    
     
     let dateFormat =  Date.FormatStyle()
         .year()
@@ -31,12 +34,14 @@ struct InterestDetail: View {
         .day()
         .locale(Locale(identifier: "fr_FR"))
     
-    let years = Array(2024...2030) // Vous pouvez ajuster cette plage selon vos besoins
-    @State private var selectedYear = Calendar.current.component(.year, from: Date())
+    let years = Array(2024...2030)
+    
+    
     
     
     var body: some View {
         @State var interest: Interest = stockedInterests.interests[index]
+        
         ScrollView {
             VStack {
                 // Default view
@@ -51,7 +56,7 @@ struct InterestDetail: View {
                         .frame(width: 150, height: 150)
                         .overlay {
                             VStack {
-                                Text("\(interest.calculInterest())€")
+                                Text("\(Int(interest.calculInterest(year: selectedInterestYear)))€")
                                     .font(.title)
                                     .bold()
                                     .foregroundStyle(.black)
@@ -60,7 +65,7 @@ struct InterestDetail: View {
                                     .foregroundStyle(.black)
                             }
                         }
-                    Picker("Année", selection: $selectedYear) {
+                    Picker("Année", selection: $selectedInterestYear) {
                         ForEach(years, id: \.self) {
                             Text("\($0)")
                         }
@@ -83,7 +88,7 @@ struct InterestDetail: View {
                         .padding(.bottom, 20)
                         .foregroundStyle(.white)
                     Divider()
-                    OperationDetail(interest: $interest, id: $operationIdToUpdate, adding: $adding, updating: $updating)
+                    OperationDetail(interest: $interest, id: $operationIdToUpdate, adding: $adding, updating: $updating, selectedOperationYear: $selectedOperationYear)
                 }
                 // Update Operation view
                 else if(editMode?.wrappedValue == .active && updating) {

@@ -18,6 +18,10 @@ struct OperationDetail: View {
     @Binding var adding: Bool
     @Binding var updating: Bool
     
+    @Binding var selectedOperationYear: Int
+    
+    let years = Array(2024...2030)
+    
     let dateFormat =  Date.FormatStyle()
         .year()
         .month(.wide)
@@ -52,6 +56,11 @@ struct OperationDetail: View {
             }
         }
         .padding(.horizontal, 20)
+        Picker("Année", selection: $selectedOperationYear) {
+            ForEach(years, id: \.self) {
+                Text("\($0)")
+            }
+        }
         if(interest.operations.count != 0) {
             ForEach(interest.operations) { operation in
                 VStack(alignment: .leading) {
