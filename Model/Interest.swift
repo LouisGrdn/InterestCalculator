@@ -23,7 +23,7 @@ class Interest: Identifiable, ObservableObject{
     var id: Int
     var date: Date
     
-    func calculInterest() -> Int{
+    func calculInterest(year: Int, isNotFirst: Bool = false) -> Float{
         let formatter =  StockedInterest.getDateFormatter()
         let startDate = self.date
         let endDate = self.date + self.date.distance(to: formatter.date(from: "31/12/\(self.date.formatted(Date.FormatStyle().year()))")!)
@@ -31,6 +31,11 @@ class Interest: Identifiable, ObservableObject{
         var interest: Float = 0
         
         var m = Float(self.montant)
+        if year > Int(self.date.formatted(Date.FormatStyle().year()))! && !isNotFirst {
+            for y in (Int(self.date.formatted(Date.FormatStyle().year()))!...year) {
+                m! += calculInterest(year: y, isNotFirst: true)
+            }
+        }
         for operation in operations {
             if(operation.date < endDate) {
                 date = operation.findEffectiveDate(startDate: self.date)
@@ -50,31 +55,6 @@ class Interest: Identifiable, ObservableObject{
         }
         let days = Float(Int(date.distance(to: endDate))/60/60/24)
         interest += (m! * days * Float(taux)!) / 36000
-        return Int(interest.rounded())
-//        formatter.dateFormat = "dd/MM/yyyy"
-//        let startDate = formatter.date(from: "01/01/2024")
-//        let endDate = formatter.date(from: "26/12/2024")
-//        var date: Date = startDate!
-//        var interest: Float = 0
-//        
-//        var m = Float(self.montant)
-//        for operation in operations {
-//            date = operation.findEffectiveDate()
-//            let days = Float(Int(startDate!.distance(to: date))/60/60/24)
-//            
-//            if(days >= 15) {
-//                interest += (m! * days * Float(taux)!) / 36000
-//            }
-//            
-//            if(operation.type == .depot) {
-//                m! += Float(operation.montant)!
-//            }
-//            else {
-//                m! -= Float(operation.montant)!
-//            }
-//        }
-//        let days = Float(Int(date.distance(to: endDate!))/60/60/24)
-//        interest += (m! * days * Float(taux)!) / 36000
-//        return Int(interest.rounded())
+        return interest.rounded()
     }
 }
