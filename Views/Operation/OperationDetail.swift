@@ -20,7 +20,7 @@ struct OperationDetail: View {
     
     @Binding var selectedOperationYear: Int
     
-    let years = Array(2024...2030)
+    let years: ClosedRange<Int>
     
     let dateFormat =  Date.FormatStyle()
         .year()
@@ -61,6 +61,7 @@ struct OperationDetail: View {
                 Text("\($0)")
             }
         }
+        .pickerStyle(.menu)
         if(interest.operations.count != 0) {
             ForEach(interest.operations) { operation in
                 VStack(alignment: .leading) {

@@ -22,7 +22,8 @@ struct InterestList: View {
                     ForEach(stockedInterest.interests) { interest in
                         let index = stockedInterest.interests.firstIndex(where: { $0.id == interest.id })
                         NavigationLink {
-                            InterestDetail(index: index!)
+                            let y = Calendar.current.component(.year, from: interest.date)
+                            InterestDetail(index: index!, years: y...y+10)
                         } label: {
                             HStack {
                                 Text(stockedInterest.interests[index!].name)
