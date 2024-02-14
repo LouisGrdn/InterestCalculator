@@ -23,7 +23,6 @@ struct InterestEditor: View {
                     .multilineTextAlignment(.center)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding(.bottom)
-                    .keyboardType(.decimalPad)
                 Text("Montant")
                     .font(.title2)
                     .foregroundStyle(.white)

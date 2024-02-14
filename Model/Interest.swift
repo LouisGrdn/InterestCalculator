@@ -7,6 +7,7 @@
 
 import Foundation
 
+@Observable
 class Interest: Identifiable, ObservableObject{
     init(name: String, taux: String, montant: String, operations: [Operation] = [], id: Int, date: Date = Date()) {
         self.name = name
@@ -35,6 +36,9 @@ class Interest: Identifiable, ObservableObject{
             for y in (Int(self.date.formatted(Date.FormatStyle().year()))!...year) {
                 m! += calculInterest(year: y, isNotFirst: true)
             }
+        }
+        if year < Calendar.current.component(.year, from: self.date) {
+            return 0
         }
         for operation in operations {
             if(operation.date < endDate) {
