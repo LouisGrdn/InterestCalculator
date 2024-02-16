@@ -8,8 +8,7 @@
 import Foundation
 
 
-@Observable
-class StockedInterest: ObservableObject{
+@Observable class StockedInterest: ObservableObject{
     var interests: [Interest] = [Interest(
         name: "Livret A",
         taux: "10.0",

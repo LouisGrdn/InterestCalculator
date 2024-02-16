@@ -50,5 +50,6 @@ struct InitialForm: View {
         .padding(.bottom, 20)
         .colorInvert()
         .colorMultiply(Color.white)
+        .environment(\.locale, Locale(identifier: "fr"))
     }
 }

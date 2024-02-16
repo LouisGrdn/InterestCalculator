@@ -59,7 +59,7 @@ struct InterestDetail: View {
                         .frame(width: 150, height: 150)
                         .overlay {
                             VStack {
-                                Text("\(Int(interest.calculInterest(year: selectedInterestYear)))€")
+                                Text("\(String(format: "%.2f",interest.calculInterest(year: selectedInterestYear)))€")
                                     .font(.title)
                                     .bold()
                                     .foregroundStyle(.black)
@@ -80,7 +80,7 @@ struct InterestDetail: View {
                         .bold()
                         .padding(.bottom, 10)
                         .foregroundStyle(.white)
-                    Text("Taux : \(interest.taux)")
+                    Text("Taux : \(interest.taux)%")
                         .font(.title2)
                         .bold()
                         .padding(.bottom, 10)

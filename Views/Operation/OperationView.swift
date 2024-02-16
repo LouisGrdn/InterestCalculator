@@ -53,6 +53,7 @@ struct OperationView: View {
                     .datePickerStyle(.automatic)
                     .colorInvert()
                     .colorMultiply(Color.white)
+                    .environment(\.locale, Locale(identifier: "fr"))
                 }
                 else {
                     DatePicker("Date de l'opération",
@@ -61,6 +62,7 @@ struct OperationView: View {
                     .datePickerStyle(.automatic)
                     .colorInvert()
                     .colorMultiply(Color.white)
+                    .environment(\.locale, Locale(identifier: "fr"))
                 }
             }
             .padding(.horizontal, 30)

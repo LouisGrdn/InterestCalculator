@@ -44,7 +44,8 @@ struct InterestEditor: View {
                            displayedComponents: [.date])
                 .padding(.bottom, 20)
                 .colorInvert()
-                    .colorMultiply(Color.white)
+                .colorMultiply(Color.white)
+                .environment(\.locale, Locale(identifier: "fr"))
             }
             .padding(.horizontal , 20)
             
